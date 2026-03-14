@@ -1,6 +1,6 @@
 ---
 name: prompt-token-counter
-version: 1.0.1
+version: 1.0.4
 description: "Count tokens and estimate costs for 300+ LLM models. Primary use: audit OpenClaw workspace token consumption (memory, persona, skills)."
 trigger: "token count, cost estimate, prompt length, API cost, OpenClaw audit, workspace token usage, memory/persona/skills tokens, context window limit"
 ---
