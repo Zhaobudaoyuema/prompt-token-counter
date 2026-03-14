@@ -1,77 +1,44 @@
-# prompt-token-counter (toksum)
+# prompt-token-counter
 
 [English](README.md)
 
-命令行工具，统计 300+ 大语言模型的 token 数量并估算 API 成本。适用于 OpenClaw 工作区 token 消耗审计（memory、persona、skills）。
+一个 **OpenClaw skill**，用于统计 token 数量并估算 API 成本。
 
-## 功能
+## 这个 Skill 能做什么
 
-- **300+ 模型**：覆盖 OpenAI、Anthropic、Google、Meta、Mistral、DeepSeek 等 34+ 提供商
-- **Token 统计**：OpenAI 使用 tiktoken 精确计数，其余为近似（约 85–95% 准确）
-- **成本估算**：支持输入/输出 token 定价
-- **CLI**：支持文本、文件、URL 输入
+加载后，Agent 可以：
 
-## 快速开始
+| 能力 | 使用场景 |
+|------|----------|
+| **统计 token** | 「这段 prompt 有多少 token？」、「X 的 token 长度」 |
+| **估算成本** | 「这段文字用 GPT-4 要多少钱？」、「Claude 的 API 成本」 |
+| **审计 OpenClaw 工作区** | 「我的工作区用了多少 token？」、「哪些 memory/persona/skills 消耗 token？」 |
+| **对比模型** | 「对比不同模型的 token 成本」、「哪个模型更便宜？」 |
+
+### OpenClaw Token 审计
+
+该 skill 帮助识别工作区各组件的 token 消耗：
+
+- **Memory 与 persona**：AGENTS.md、SOUL.md、IDENTITY.md、USER.md、MEMORY.md、TOOLS.md 等
+- **Skills**：`~/.openclaw/skills/` 或 `workspace/skills/` 下的每个 SKILL.md
+
+审计示例：
+```bash
+python -m scripts.cli -m gpt-4o -c -f AGENTS.md -f SOUL.md -f MEMORY.md
+```
+
+## 何时触发
+
+- 用户询问 token 数量、prompt 长度、API 成本
+- 用户提到 OpenClaw 上下文大小或工作区 token 使用
+- Agent 需要在变更前后审计 token 消耗
+
+## 快速参考
 
 ```bash
 python -m scripts.cli -m gpt-4 "Hello, world!"
-```
-
-## 用法示例
-
-```bash
-# 统计文件 token
 python -m scripts.cli -f input.txt -m claude-3-opus -c
-
-# 多文件 + 成本
-python -m scripts.cli -v -c -f AGENTS.md -f SOUL.md -f MEMORY.md -m gpt-4o
-
-# 列出支持模型
-python -m scripts.cli -l
+python -m scripts.cli -l   # 列出 300+ 模型
 ```
-
-## 选项
-
-| 选项 | 说明 |
-|------|------|
-| `-m, --model` | 模型名（必填，除非 `--list-models`） |
-| `-f, --file` | 从文件读取（可重复） |
-| `-u, --url` | 从 URL 读取（可重复） |
-| `-l, --list-models` | 列出所有支持模型 |
-| `-c, --cost` | 显示成本估算 |
-| `--output-tokens` | 使用输出 token 定价 |
-| `--currency` | USD 或 INR |
-| `-v, --verbose` | 详细输出 |
-
-## Python API
-
-```python
-from scripts import TokenCounter, count_tokens, estimate_cost
-
-tokens = count_tokens("Hello!", "gpt-4")
-counter = TokenCounter("claude-3-opus")
-tokens = counter.count_messages([
-    {"role": "system", "content": "..."},
-    {"role": "user", "content": "..."}
-])
-cost = estimate_cost(tokens, "gpt-4", input_tokens=True)
-```
-
-## 项目结构
-
-```
-prompt_token_counter/
-├── SKILL.md
-├── package.json
-├── publish_npm.py
-└── scripts/
-    ├── cli.py
-    ├── core.py
-    └── registry/
-        ├── models.py
-        └── pricing.py
-```
-
-## License
 
 MIT

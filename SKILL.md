@@ -1,7 +1,8 @@
 ---
 name: prompt-token-counter
 version: 1.0.1
-description: Count tokens and estimate costs for 300+ LLM models. Primary use: audit OpenClaw workspace token consumption—memory files, persona (SOUL/IDENTITY/AGENTS), and skills (SKILL.md). Trigger when user asks about token counting, prompt length, API cost, or OpenClaw context token usage.
+description: "Count tokens and estimate costs for 300+ LLM models. Primary use: audit OpenClaw workspace token consumption (memory, persona, skills)."
+trigger: "token count, cost estimate, prompt length, API cost, OpenClaw audit, workspace token usage, memory/persona/skills tokens, context window limit"
 ---
 
 # Prompt Token Counter (toksum)
@@ -180,11 +181,19 @@ cost = estimate_cost(tokens, "gpt-4", input_tokens=True)
 
 ---
 
-## When to Use
+## When to Trigger This Skill
 
-- User asks: token count, prompt length, API cost
-- User mentions: OpenClaw context size, memory/persona/skills token usage
-- Agent needs: audit workspace token consumption before/after changes
+Activate this skill when the user:
+
+| Trigger | Example phrases |
+|---------|-----------------|
+| **Token count** | "How many tokens?", "Count tokens in this prompt", "Token length of X" |
+| **Cost estimate** | "Estimate API cost", "How much for this text?", "Cost for GPT-4" |
+| **Prompt size** | "Check prompt length", "Is this too long?", "Context window limit" |
+| **OpenClaw audit** | "How many tokens does my workspace use?", "Audit OpenClaw memory/persona/skills", "Which components consume tokens?", "Token usage of AGENTS.md / SOUL.md / skills" |
+| **Model comparison** | "Compare token cost across models", "Which model is cheaper?" |
+
+Also trigger when the agent needs to count tokens or estimate cost before/after generating content.
 
 ---
 
