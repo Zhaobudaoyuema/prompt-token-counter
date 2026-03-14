@@ -1,6 +1,6 @@
 ---
 name: prompt-token-counter
-version: 1.0.4
+version: 1.0.6
 description: "Count tokens and estimate costs for 300+ LLM models. Primary use: audit OpenClaw workspace token consumption (memory, persona, skills)."
 trigger: "token count, cost estimate, prompt length, API cost, OpenClaw audit, workspace token usage, memory/persona/skills tokens, context window limit"
 ---
@@ -107,6 +107,30 @@ Run: `python publish_npm.py` (after `npm login`).
 
 ---
 
+## URL Usage — Mandatory Agent Rule
+
+**Before using `-u` / `--url` to fetch content from any URL, you MUST:**
+
+1. **Explicitly warn the user** that the CLI will make an outbound HTTP/HTTPS request to the given URL.
+2. **Confirm the URL is trusted** — tell the user: "Only use URLs you fully trust. Untrusted URLs may expose your IP, leak data, or be used for SSRF. Do you confirm this URL is safe?"
+3. **Prefer alternatives** — if the user can provide the content via `-f` (local file) or inline text, suggest that instead of URL fetch.
+4. **Never auto-fetch** — do not invoke `-u` without the user having explicitly provided the URL and acknowledged the risk.
+
+**If the user insists on using a URL:** Proceed only after they confirm. State clearly: "I will fetch from [URL] to count tokens. Proceed?"
+
+---
+
+## Model Name — Mandatory Agent Rule
+
+**Before invoking the CLI, you MUST have a concrete model name from the user.**
+
+1. **Require explicit model** — `-m` / `--model` is required. Do not guess or assume; the user must provide the exact name (e.g. gpt-4o, claude-3-5-sonnet-20241022).
+2. **If unclear, ask** — if the user says "GPT" or "Claude" or "the latest model" without a specific name, ask: "Please specify the exact model name (e.g. gpt-4o, claude-3-5-sonnet-20241022). Run `python -m scripts.cli -l` to list supported models."
+3. **Do not auto-pick** — never substitute a model on behalf of the user without their confirmation.
+4. **Validate when possible** — if the model name seems ambiguous, offer `-l` output or confirm: "I'll use [model]. Is that correct?"
+
+---
+
 ## CLI Usage
 
 ```bash
@@ -115,9 +139,9 @@ python -m scripts.cli [OPTIONS] [TEXT ...]
 
 | Option | Short | Description |
 |--------|-------|-------------|
-| `--model` | `-m` | Model name (required unless `--list-models`) |
+| `--model` | `-m` | Model name (required unless `--list-models`) — **Agent must obtain exact name from user; ask if unclear** |
 | `--file` | `-f` | Read from file (repeatable) |
-| `--url` | `-u` | Read from URL (repeatable) |
+| `--url` | `-u` | Read from URL (repeatable) — **Agent must warn user before use; only trusted URLs** |
 | `--list-models` | `-l` | List supported models |
 | `--cost` | `-c` | Show cost estimate |
 | `--output-tokens` | | Use output token pricing |
@@ -178,6 +202,8 @@ cost = estimate_cost(tokens, "gpt-4", input_tokens=True)
 | "tiktoken is required" | `pip install tiktoken` |
 | UnsupportedModelError | Use `-l` for valid names |
 | Cost "NA" | Model has no pricing; count still valid |
+| User provides URL | **Agent must warn:** outbound request, SSRF risk, only trusted URLs; confirm before `-u` |
+| Model unclear / vague | **Agent must ask:** user to specify exact model name; offer `-l` to list; do not guess |
 
 ---
 
