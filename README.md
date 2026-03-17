@@ -15,6 +15,22 @@ This project provides **local token counting** without API calls:
 
 For non-OpenAI models, we use **provider-specific formulas** calibrated from benchmark data. When text contains CJK (Chinese/Japanese/Korean), we **blend the ratio** by CJK character ratio so that Chinese-heavy text gets fewer chars-per-token (more tokens per character).
 
+### Benchmark: Main Models (10000 chars, Chinese)
+
+| Model | Chars | Tokens |  1 token ≈ chars | Status |
+|------|--------|----------|-------------------|------|
+| anthropic/claude-sonnet-4-6 | 100000 | 115829 | 0.8633 | ✓ |
+| anthropic/claude-sonnet-4-5 | 100000 | 115829 | 0.8633 | ✓ |
+| anthropic/claude-opus-4.6 | 100000 | 115829 | 0.8633 | ✓ |
+| openai/gpt-5.2-codex | 100000 | 128254 | 0.7797 | ✓ |
+| google/gemini-3.1-pro-preview | 100000 | 74366 | 1.3447 | ✓ |
+| z-ai/glm-5 | 100000 | 65439 | 1.5281 | ✓ |
+| volcengine/doubao-seed-2-0-pro | 100000 | 68741 | 1.4547 | ✓ |
+| moonshot/kimi-k2.5 | 100000 | 59065 | 1.6931 | ✓ |
+| minimax/MiniMax-M2.5 | 100000 | 59839 | 1.6712 | ✓ |
+| deepseek-v3.2 | 100000 | 63895 | 1.5651 | ✓ |
+
+
 ### Benchmark: Main Models (8927 chars, English/mixed)
 
 | Model | Chars | Tokens | 1 token ≈ chars | Status |
