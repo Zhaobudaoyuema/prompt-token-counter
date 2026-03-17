@@ -1,6 +1,6 @@
 {
   "name": "prompt-token-counter",
-  "version": "1.0.6",
+  "version": "1.0.11",
   "description": "OpenClaw skill: Count tokens and estimate costs for 300+ LLM models. Audit workspace token consumption (memory, persona, skills).",
   "keywords": [
     "openclaw",
@@ -12,11 +12,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kactlabs/toksum"
+    "url": "https://github.com/Zhaobudaoyuema/prompt-token-counter"
+  },
+  "homepage": "https://github.com/Zhaobudaoyuema/prompt-token-counter",
+  "bugs": {
+    "url": "https://github.com/Zhaobudaoyuema/prompt-token-counter/issues"
   },
   "files": [
     "SKILL.md",
-    "scripts",
-    "examples"
+    "publish_npm.py",
+    "scripts"
   ]
 }
